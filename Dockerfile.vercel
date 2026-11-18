@@ -35,7 +35,7 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
-ENV PORT=5173
+ENV PORT=80
 ENV RUNNING_IN_DOCKER=true
 ENV CLOUDFLARE_CF_FETCH_ENABLED=false
 ENV WRANGLER_SEND_METRICS=false
@@ -43,8 +43,8 @@ ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 ENV SSL_CERT_DIR=/etc/ssl/certs
 ENV NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
 
-EXPOSE 5173
+EXPOSE 80
 
 # Vercel routes requests to the port in PORT. The default keeps local
 # container runs compatible; Vercel can override PORT at runtime.
-CMD ["sh", "-c", "pnpm exec vite preview --host 0.0.0.0 --port ${PORT:-5173} --strictPort"]
+CMD ["sh", "-c", "pnpm exec vite preview --host 0.0.0.0 --port ${PORT:-80} --strictPort"]
