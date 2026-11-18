@@ -86,6 +86,7 @@ describe('security middleware', () => {
         "frame-src 'self' https://*.webcontainer-api.io https://*.local-credentialless.webcontainer-api.io",
       );
       expect(headers['Content-Security-Policy']).toContain('wss://*.webcontainer-api.io');
+      expect(headers['Content-Security-Policy']).toContain("worker-src 'self' blob: https://*.webcontainer-api.io");
     });
   });
 
