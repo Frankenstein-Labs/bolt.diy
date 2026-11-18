@@ -8,10 +8,15 @@ ENV HUSKY=0
 ENV CI=true
 ENV CLOUDFLARE_CF_FETCH_ENABLED=false
 ENV WRANGLER_SEND_METRICS=false
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+ENV SSL_CERT_DIR=/etc/ssl/certs
+ENV NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
 
 # workerd/Miniflare needs the system CA bundle for outbound TLS.
 RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates \
   && update-ca-certificates \
+  && test -s /etc/ssl/certs/ca-certificates.crt \
+  && grep -q 'BEGIN CERTIFICATE' /etc/ssl/certs/ca-certificates.crt \
   && rm -rf /var/lib/apt/lists/*
 RUN corepack enable && corepack prepare pnpm@9.15.9 --activate
 
@@ -34,6 +39,9 @@ ENV PORT=5173
 ENV RUNNING_IN_DOCKER=true
 ENV CLOUDFLARE_CF_FETCH_ENABLED=false
 ENV WRANGLER_SEND_METRICS=false
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+ENV SSL_CERT_DIR=/etc/ssl/certs
+ENV NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
 
 EXPOSE 5173
 
