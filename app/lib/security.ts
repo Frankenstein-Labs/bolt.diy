@@ -106,12 +106,18 @@ export function getTrustedClientIP(request: Request, context?: unknown): string 
   const cloudflare = runtimeContext?.cloudflare;
 
   if (cloudflare?.ctx && typeof cloudflare.ctx.waitUntil === 'function') {
-    return normalizeIpAddress(request.headers.get('cf-connecting-ip'));
+    const cloudflareClientIP = normalizeIpAddress(request.headers.get('cf-connecting-ip'));
+
+    if (cloudflareClientIP) {
+      return cloudflareClientIP;
+    }
   }
 
   /*
    * Only trust this header when an operator has configured a reverse proxy to
-   * overwrite it and blocked direct access to the application origin.
+   * overwrite it and blocked direct access to the application origin. Vercel
+   * calculates x-real-ip at its edge; this fallback is explicitly enabled only
+   * through BUG_REPORT_TRUSTED_IP_HEADER=x-real-ip.
    */
   if (process.env.BUG_REPORT_TRUSTED_IP_HEADER === 'x-real-ip') {
     return normalizeIpAddress(request.headers.get('x-real-ip'));
