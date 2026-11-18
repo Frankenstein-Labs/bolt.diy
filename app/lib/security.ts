@@ -172,8 +172,8 @@ export function createSecurityHeaders(request?: Request) {
       "style-src 'self' 'unsafe-inline'", // Allow inline styles
       "img-src 'self' data: https: blob:", // Allow images from same origin, data URLs, and HTTPS
       "font-src 'self' data:", // Allow fonts from same origin and data URLs
-      "connect-src 'self' https://api.github.com https://api.netlify.com", // Allow connections to GitHub and Netlify APIs
-      "frame-src 'none'", // Prevent iframe embedding
+      "connect-src 'self' https://api.github.com https://api.netlify.com https://*.webcontainer-api.io wss://*.webcontainer-api.io", // Allow GitHub, Netlify, and WebContainer runtime connections
+      "frame-src 'self' https://*.webcontainer-api.io https://*.local-credentialless.webcontainer-api.io", // Allow only same-origin and official WebContainer preview frames
       "object-src 'none'", // Prevent object embedding
       "base-uri 'self'",
       "form-action 'self'",
