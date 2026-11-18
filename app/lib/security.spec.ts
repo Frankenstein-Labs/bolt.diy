@@ -50,6 +50,30 @@ describe('security middleware', () => {
 
       expect(checkRateLimit(request, '/api/chat')).toEqual({ allowed: false, unavailable: true });
     });
+
+    it('uses the explicitly trusted Vercel x-real-ip when the Cloudflare shim has no client IP', () => {
+      const previous = process.env.BUG_REPORT_TRUSTED_IP_HEADER;
+      process.env.BUG_REPORT_TRUSTED_IP_HEADER = 'x-real-ip';
+
+      try {
+        const request = new Request('https://example.com/api/chat', {
+          headers: { 'x-real-ip': '203.0.113.10' },
+        });
+
+        const result = checkRateLimit(request, '/api/chat', {
+          cloudflare: { ctx: { waitUntil() {} } },
+        });
+
+        expect(result.allowed).toBe(true);
+        expect(result.unavailable).toBeUndefined();
+      } finally {
+        if (previous === undefined) {
+          delete process.env.BUG_REPORT_TRUSTED_IP_HEADER;
+        } else {
+          process.env.BUG_REPORT_TRUSTED_IP_HEADER = previous;
+        }
+      }
+    });
   });
 
   describe('createSecurityHeaders', () => {
