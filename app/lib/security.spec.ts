@@ -82,6 +82,10 @@ describe('security middleware', () => {
       expect(headers['X-Frame-Options']).toBe('DENY');
       expect(headers['X-Content-Type-Options']).toBe('nosniff');
       expect(headers['Content-Security-Policy']).toBeDefined();
+      expect(headers['Content-Security-Policy']).toContain(
+        "frame-src 'self' https://*.webcontainer-api.io https://*.local-credentialless.webcontainer-api.io",
+      );
+      expect(headers['Content-Security-Policy']).toContain('wss://*.webcontainer-api.io');
     });
   });
 
