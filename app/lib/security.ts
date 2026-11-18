@@ -174,6 +174,7 @@ export function createSecurityHeaders(request?: Request) {
       "font-src 'self' data:", // Allow fonts from same origin and data URLs
       "connect-src 'self' https://api.github.com https://api.netlify.com https://*.webcontainer-api.io wss://*.webcontainer-api.io", // Allow GitHub, Netlify, and WebContainer runtime connections
       "frame-src 'self' https://*.webcontainer-api.io https://*.local-credentialless.webcontainer-api.io", // Allow only same-origin and official WebContainer preview frames
+      "worker-src 'self' blob: https://*.webcontainer-api.io", // Allow bundled and blob-backed WebContainer workers
       "object-src 'none'", // Prevent object embedding
       "base-uri 'self'",
       "form-action 'self'",
