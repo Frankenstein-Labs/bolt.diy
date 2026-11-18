@@ -25,6 +25,8 @@ RUN pnpm fetch
 
 COPY . .
 RUN pnpm install --offline --frozen-lockfile
+# Fail the production image build if the Vercel-specific trusted-IP regression returns.
+RUN pnpm exec vitest --run app/lib/security.spec.ts
 RUN NODE_OPTIONS=--max-old-space-size=4096 pnpm run build
 
 # The existing Vite config uses the Cloudflare preview adapter for SSR.
