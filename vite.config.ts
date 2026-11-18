@@ -42,6 +42,14 @@ export default defineConfig((config) => {
         overlay: true,
       },
     },
+    // Vercel's public production aliases must be explicitly trusted by Vite
+    // preview; otherwise the application returns "This host is not allowed".
+    preview: {
+      allowedHosts: [
+        'frankenstein-bolt-diy.vercel.app',
+        'frankenstein-bolt-diy-coumbassaabdoulaye98-3018s-projects.vercel.app',
+      ],
+    },
     resolve: {
       tsconfigPaths: true,
     },
